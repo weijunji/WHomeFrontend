@@ -87,6 +87,9 @@ export default {
   components: {
     Logo,
     VuetifyLogo
+  },
+  beforeMount () {
+    this.$axios.get('/test')
   }
 }
 </script>
