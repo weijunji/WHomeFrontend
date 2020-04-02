@@ -1,7 +1,18 @@
 <template>
   <v-app light>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-toolbar-title v-text="title" />
+    <v-app-bar dark fixed app color="blue darken-2">
+      <v-toolbar-title color="white" v-text="title" />
+      <v-btn to="/" class="font-weight-regular ml-3" text>主页</v-btn>
+      <v-btn
+        v-for="(item, index) in menu"
+        :key="index"
+        :disabled="item.admin && isLogin"
+        :to="item.link"
+        class="font-weight-regular"
+        text
+      >
+        {{ item.name }}
+      </v-btn>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -9,7 +20,7 @@
       </v-container>
     </v-content>
     <v-footer :fixed="fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>赣ICP备17016171号-2 &copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
 </template>
@@ -18,29 +29,40 @@
 export default {
   data () {
     return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
+      title: 'WHome',
+      menu: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          name: '文章',
+          link: '/blogs',
+          admin: false
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          name: '书架',
+          link: '/books',
+          admin: true
+        },
+        {
+          name: '追剧',
+          link: '/series',
+          admin: true
+        },
+        {
+          name: '电影',
+          link: '/movies',
+          admin: true
         }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+      ]
+    }
+  },
+  computed: {
+    isLogin () {
+      return this.$store.state.token !== ''
     }
   },
   beforeCreate () {
     this.$store.commit('init')
+  },
+  beforeUpdate () {
     if (this.$router.currentRoute.name !== 'Login' && this.$store.state.token === '') { this.$router.push('login') }
   }
 }
