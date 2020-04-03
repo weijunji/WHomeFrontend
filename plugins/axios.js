@@ -1,5 +1,14 @@
-export default function ({ $axios, redirect }) {
+export default function ({ $axios, store }) {
   $axios.onRequest((config) => {
-    config.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg1NzkxMDg0LCJleHAiOjE1ODgzODMwODR9.n431aT9uy2j_ekSYpoXHU8SfNo560DkoBieNA8uVW9I'
+    if (store.state.token !== '') {
+      config.headers.Authorization = 'Bearer ' + store.state.token
+    }
+  })
+
+  $axios.onResponseError((error) => {
+    if (error.response.status === 401 || error.response.status === 403) {
+      store.commit('changeToken', { token: '' })
+    }
+    return Promise.reject(error)
   })
 }
