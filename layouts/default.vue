@@ -32,7 +32,9 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn v-else to="/login" class="font-weight-regular ml-3" text>登录</v-btn>
+      <v-btn v-else to="/login" class="font-weight-regular ml-3" text>
+        登录
+      </v-btn>
     </v-app-bar>
     <v-content>
       <nuxt />
@@ -75,14 +77,6 @@ export default {
       ]
     }
   },
-  beforeUpdate () {
-    if (this.$router.currentRoute.name !== 'Login' && this.$store.state.token === '') { this.$router.push('login') }
-  },
-  methods: {
-    logout () {
-      this.$store.commit('changeToken', { token: '' })
-    }
-  },
   computed: {
     isLogin () {
       return this.$store.state.token !== ''
@@ -93,6 +87,14 @@ export default {
     avatar () {
       const email = this.$store.state.email.toLowerCase()
       return 'https://www.gravatar.com/avatar/' + md5(email)
+    }
+  },
+  beforeUpdate () {
+    if (this.$router.currentRoute.name !== 'Login' && this.$store.state.token === '') { this.$router.push('login') }
+  },
+  methods: {
+    logout () {
+      this.$store.commit('changeToken', { token: '' })
     }
   }
 }
