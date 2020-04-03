@@ -14,7 +14,8 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: "https://cdn.bootcss.com/font-awesome/5.13.0/css/all.min.css"}
     ]
   },
   /*
@@ -32,6 +33,13 @@ export default {
   plugins: [
     {
       src: '~/plugins/axios'
+    },
+    {
+      src: '~/plugins/toast'
+    },
+    {
+      src: '~/plugins/nuxtClientInit',
+      ssr: false
     }
   ],
   /*
@@ -69,8 +77,8 @@ export default {
     theme: {
       themes: {
         light: {
-          primary: colors.purple,
-          secondary: colors.grey.darken1,
+          primary: colors.blue,
+          secondary: colors.grey.darken3,
           accent: colors.shades.black,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
@@ -78,6 +86,9 @@ export default {
           success: colors.green.accent3
         }
       }
+    },
+    icons: {
+      iconfont: 'fa',
     }
   },
   /*
