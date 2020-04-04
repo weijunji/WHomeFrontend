@@ -89,6 +89,14 @@ export default {
       return 'https://www.gravatar.com/avatar/' + md5(email)
     }
   },
+  mounted () {
+    document.addEventListener('drop', function (e) {
+      e.preventDefault()
+    }, false)
+    document.addEventListener('dragover', function (e) {
+      e.preventDefault()
+    }, false)
+  },
   beforeUpdate () {
     if (this.$router.currentRoute.name !== 'Login' && this.$store.state.token === '') { this.$router.push('login') }
   },
