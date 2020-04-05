@@ -7,7 +7,7 @@
   >
     <v-img
       class="align-end"
-      :src="cover"
+      :src="cover + '-bookCover'"
     >
       <v-card-title :class="'font-weight-bold grey--text ' + (colorType ? 'text--lighten-5' : 'text--darken-4')">
         {{ title }}
@@ -17,7 +17,7 @@
       <v-row>
         <v-col :cols="4" class="py-2" style="max-width: 72px; min-width: 60px">
           <v-avatar>
-            <img :src="avatar">
+            <img :src="avatar + '-avatar'">
           </v-avatar>
         </v-col>
         <v-col :cols="8" style="padding: 10px 0 0 0">
