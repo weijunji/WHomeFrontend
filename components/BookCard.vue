@@ -1,41 +1,44 @@
 <template>
-  <v-card
-    class="mx-auto elevation-7"
-    :dark="colorType"
-    max-width="300px"
-    :color="color"
-  >
-    <v-img
-      class="align-end"
-      :src="cover + '-bookCover'"
+  <v-hover v-slot:default="{ hover }">
+    <v-card
+      class="mx-auto"
+      :elevation="hover ? 13 : 5"
+      :dark="colorType"
+      max-width="300px"
+      :color="color"
     >
-      <v-card-title :class="'font-weight-bold grey--text ' + (colorType ? 'text--lighten-5' : 'text--darken-4')">
-        {{ title }}
-      </v-card-title>
-    </v-img>
-    <v-card-text class="text--primary py-0 pl-2">
-      <v-row>
-        <v-col :cols="4" class="py-2" style="max-width: 72px; min-width: 60px">
-          <v-avatar>
-            <img :src="avatar + '-avatar'">
-          </v-avatar>
-        </v-col>
-        <v-col :cols="8" style="padding: 10px 0 0 0">
-          <div :class="'text-truncate pl-1 grey--text ' + (colorType ? 'text--lighten-4' : 'text--darken-3')">
-            {{ author }}
-          </div>
-          <v-rating
-            :value="star"
-            readonly
-            :background-color="color"
-            color="yellow darken-4"
-            dense
-            size="18"
-          />
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+      <v-img
+        class="align-end"
+        :src="cover + '-bookCover'"
+      >
+        <v-card-title :class="'font-weight-bold grey--text ' + (colorType ? 'text--lighten-5' : 'text--darken-4')">
+          {{ title }}
+        </v-card-title>
+      </v-img>
+      <v-card-text class="text--primary py-0 pl-2">
+        <v-row>
+          <v-col :cols="4" class="py-2" style="max-width: 72px; min-width: 60px">
+            <v-avatar>
+              <img :src="avatar + '-avatar'">
+            </v-avatar>
+          </v-col>
+          <v-col :cols="8" style="padding: 10px 0 0 0">
+            <div :class="'text-truncate pl-1 grey--text ' + (colorType ? 'text--lighten-4' : 'text--darken-3')">
+              {{ author }}
+            </div>
+            <v-rating
+              :value="star"
+              readonly
+              :background-color="color"
+              color="yellow darken-4"
+              dense
+              size="18"
+            />
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-hover>
 </template>
 
 <script>
