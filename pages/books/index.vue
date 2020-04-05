@@ -2,7 +2,7 @@
   <div>
     <LoginRequired />
     <v-container>
-      <v-row>
+      <v-row v-if="books.length">
         <v-col
           v-for="book of books"
           :key="book.id"
@@ -13,12 +13,15 @@
             :title="book.title"
             :author="book.author.name"
             :star="book.star"
-            :cover="book.cover.url"
-            :color="book.color"
-            :avatar="book.author.avatar.url"
+            :cover="book.cover ? book.cover.url : ''"
+            :color="book.color ? book.color : '#ffffff'"
+            :avatar="book.author.avatar ? book.author.avatar.url : 'https://cdn.weijunji.top/files/unknown.png'"
           />
         </v-col>
       </v-row>
+      <h2 v-else>
+        没有书籍存在
+      </h2>
     </v-container>
     <v-btn
       dark
