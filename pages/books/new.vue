@@ -3,7 +3,7 @@
     <v-form>
       <v-row>
         <v-col :cols="12" :sm="6" :md="4">
-          <drop-zone v-model="file" title="上传封面"/>
+          <drop-zone v-model="file" title="上传封面" />
         </v-col>
         <v-col :cols="12" :sm="6" :md="8">
           <v-text-field
@@ -14,34 +14,23 @@
           />
           <v-row>
             <v-col>
-              <v-overflow-btn
+              <selector-with-new
                 v-model="data.author"
-                :items="authors"
                 label="作者"
-                editable
-                item-text="name"
-                item-value="id"
-                :search-input.sync="authorSearch"
-              >
-                <v-list-item slot="no-data" @click="createAuthor">
-                  新建 {{ authorSearch }}
-                </v-list-item>
-              </v-overflow-btn>
+                avatar
+                new-url="/book-authors"
+                items-query="query{bookAuthors{id name avatar{url}}}"
+                items-prop="bookAuthors"
+              />
             </v-col>
             <v-col>
-              <v-overflow-btn
+              <selector-with-new
                 v-model="data.category"
-                :items="categorys"
                 label="分类"
-                editable
-                item-text="name"
-                item-value="id"
-                :search-input.sync="categorySearch"
-              >
-                <v-list-item slot="no-data" @click="createCategory">
-                  新建 {{ categorySearch }}
-                </v-list-item>
-              </v-overflow-btn>
+                new-url="/book-categories"
+                items-query="query{bookCategories{id name}}"
+                items-prop="bookCategories"
+              />
             </v-col>
           </v-row>
           <v-textarea
@@ -71,12 +60,14 @@
             label="状态"
             row
           >
-            <v-radio label="未读" :value="0" color="error" />
-            <v-radio label="在读" :value="1" color="warning" />
-            <v-radio label="已读" :value="2" color="success" />
+            <v-radio label="未读" value="wait" color="error" />
+            <v-radio label="在读" value="reading" color="warning" />
+            <v-radio label="已读" value="finish" color="success" />
           </v-radio-group>
           <div style="text-align: end;">
-            <v-btn class="ma-2" outlined color="primary" @click="submit">新建书籍</v-btn>
+            <v-btn class="ma-2" outlined color="primary" @click="submit">
+              新建书籍
+            </v-btn>
           </div>
         </v-col>
       </v-row>
@@ -85,75 +76,62 @@
 </template>
 
 <script>
+import ColorThief from '~/thirdparty/colorthief'
+
 import DropZone from '~/components/DropZone'
+import SelectorWithNew from '~/components/SelectorWithNew'
 
 export default {
   name: 'NewBook',
   components: {
-    DropZone
-  },
-  asyncData () {
-    return {
-      authors: [
-        { id: 1, name: '雨天' },
-        { id: 2, name: '夏天' }
-      ],
-      categorys: [
-        { id: 1, name: 'haha' },
-        { id: 2, name: 'fafa' }
-      ]
-    }
+    DropZone,
+    SelectorWithNew
   },
   data () {
     return {
       data: {
         title: '',
-        coverId: 0,
-        coverLink: '',
-        color: '',
-        author: 0,
-        category: 0,
+        cover: '',
+        color: '#ffffff',
+        author: '',
+        category: '',
         introduce: '',
         comment: '',
         star: 3,
-        read: 0, // 0: wait, 1: reading, 2: finish
+        read: 'wait',
         link: ''
       },
-      authorSearch: '',
-      categorySearch: '',
       file: {
-        id: 0,
+        id: '',
         url: ''
-      }
+      },
+      created: false
+    }
+  },
+  destroyed () {
+    if (!this.created && !this.file.id) {
+      this.$axios.delete(`/upload/files/${this.file.id}`)
     }
   },
   methods: {
-    createAuthor () {
-
-    },
-    createCategory () {
-
-    },
     submit () {
-      this.$axios.post('/graphql', {
-        query: `mutation{
-          createBook (input:{
-            data: {
-              title: "${this.data.title}"
-              cover: ${this.data.cover}
-              color: "${this.data.color}"
-              author: ${this.data.author}
-              category: ${this.data.category}
-              introduce: "${this.data.introduce}"
-              comment: "${this.data.comment}"
-              star: ${this.data.star}
-              read: ${this.data.read === 0 ? 'wait' : (this.data.read === 1 ? 'reading' : 'finish')}
-              link: "${this.data.link}"
-            }
-          }) {
-            book { id }
-          }
-        }`
+      const colorThief = new ColorThief()
+      const image = new Image()
+      image.crossOrigin = 'Anonymous'
+      image.src = this.file.url
+      const c = colorThief.getColor(image, 0.5, 5)
+      let color = '#'
+      for (let i = 0; i < 3; i++) {
+        const hex = c[i].toString(16)
+        color += (hex.length === 1 ? '0' + hex : hex)
+      }
+      this.data.color = color
+      this.data.cover = this.file.id
+
+      this.$axios.post('/books', this.data).then(({ data }) => {
+        this.created = true
+        this.$toast.success('新建成功')
+        this.$router.push('/books/' + data.id)
       })
     }
   }
