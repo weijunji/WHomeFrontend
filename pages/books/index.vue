@@ -67,7 +67,7 @@ export default {
         }
       }`
     })
-    const books = data.data.booksConnection.values
+    const books = data.data.booksConnection.values.reverse()
     /* append data for debug
     for (const i of Array(50)) {
       books.push(data.data.booksConnection.values[0])

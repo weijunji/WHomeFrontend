@@ -1,5 +1,5 @@
 <template>
-  <div class="drop-zone pa-2" style="width: 100%">
+  <div class="drop-zone pa-2 continuous-borders" :class="{'drag-anim': dragover}" style="width: 100%">
     <v-responsive :aspect-ratio="aspectRatio">
       <input ref="inputFile" type="file" accept="image/*" style="display: none" @change="inputChange">
       <div v-if="file.url" style="position: relative">
@@ -20,7 +20,14 @@
           </div>
         </v-hover>
       </div>
-      <div v-else style="width: 100%; height: 100%;" @drop="drop" @click="click">
+      <div
+        v-else
+        style="width: 100%; height: 100%;"
+        @drop="drop"
+        @click="click"
+        @dragenter="dragover = true"
+        @dragleave="dragover = false"
+      >
         <slot>
           <div class="text-center inner">
             <v-icon x-large color="primary">
@@ -68,6 +75,11 @@ export default {
       default: '上传图片'
     }
   },
+  data () {
+    return {
+      dragover: false
+    }
+  },
   methods: {
     upload (fd) {
       this.$axios.post('/upload', fd).then(({ data }) => {
@@ -82,6 +94,7 @@ export default {
     },
     drop (ev) {
       ev.preventDefault()
+      this.dragover = false
       if (ev.dataTransfer.types[0] === 'Files') {
         if (ev.dataTransfer.files[0].type.includes('image')) {
           const fd = new FormData()
@@ -109,11 +122,14 @@ export default {
 </script>
 
 <style lang="scss">
+@keyframes ants {
+  to { background-position: 100%; }
+}
 .drop-zone {
   padding: 1em;
   border: 2px dashed transparent;
-  background: linear-gradient(white,white) padding-box,
-  repeating-linear-gradient(-45deg,#1976D2 0, #1976D2 0.25em,white 0,white 0.75em);
+  background: linear-gradient(white, white) padding-box,
+    repeating-linear-gradient(-45deg, #1976D2 0, #1976D2 25%, white 0, white 50%) 0 / 1em 1em;
   .inner {
     position: absolute;
     left: 50%;
@@ -125,5 +141,8 @@ export default {
     top: 5%;
     right: 5%;
   }
+}
+.drag-anim {
+  animation: ants 12s linear infinite;
 }
 </style>
