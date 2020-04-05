@@ -23,7 +23,9 @@
       <div v-else style="width: 100%; height: 100%;" @drop="drop" @click="click">
         <slot>
           <div class="text-center inner">
-            <v-icon x-large color="primary">fa-cloud-upload-alt</v-icon>
+            <v-icon x-large color="primary">
+              fa-cloud-upload-alt
+            </v-icon>
             <h3>
               {{ title }}
             </h3>
@@ -75,8 +77,8 @@ export default {
     },
     remove () {
       this.$axios.delete(`/upload/files/${this.file.id}`)
-      this.file.url = ''
-      this.file.id = 0
+      this.$emit('change', { id: 0, url: '' })
+      this.$refs.inputFile.value = ''
     },
     drop (ev) {
       ev.preventDefault()
