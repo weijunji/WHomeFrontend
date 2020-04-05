@@ -5,7 +5,7 @@
       <div v-if="file.url" style="position: relative">
         <v-hover v-slot:default="{ hover }">
           <div>
-            <img :src="file.url" style="width: 100%">
+            <img :src="file.url" style="width: 100%" crossorigin="Anonymous">
             <v-fade-transition>
               <v-btn
                 v-if="hover"
