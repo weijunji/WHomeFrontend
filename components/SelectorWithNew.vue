@@ -6,6 +6,7 @@
     :item-text="itemText"
     :item-value="itemId"
     :search-input.sync="search"
+    :error-messages="errorMessages"
     @change="change"
   >
     <template v-slot:item="{ item }">
@@ -73,6 +74,10 @@ export default {
     unknownAvatar: {
       type: String,
       default: 'https://cdn.weijunji.top/files/unknown.png'
+    },
+    errorMessages: {
+      type: [String, Array],
+      default: ''
     }
   },
   data () {
