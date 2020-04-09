@@ -66,7 +66,7 @@ export default {
         },
         {
           name: '追剧',
-          link: '/series',
+          link: '/bgm',
           admin: true
         },
         {
