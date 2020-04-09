@@ -15,7 +15,8 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: "https://cdn.bootcss.com/font-awesome/5.13.0/css/all.min.css"}
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css'},
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/vditor/dist/index.css'}
     ]
   },
   /*
@@ -65,7 +66,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://localhost:1337/',
+    baseURL: 'http://localhost:1337',
     https: false
   },
   /*
