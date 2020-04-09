@@ -7,37 +7,44 @@
         </v-col>
         <v-col :cols="12" :sm="6" :md="8">
           <v-text-field
-            v-model="data.title"
+            v-model.trim="$v.data.title.$model"
             label="标题"
             placeholder="标题"
             outlined
+            :error-messages="titleErrors"
           />
           <v-row>
             <v-col>
               <selector-with-new
-                v-model="data.author"
+                v-model="$v.data.author.$model"
                 label="作者"
                 avatar
                 new-url="/book-authors"
                 items-query="query{bookAuthors{id name avatar{url}}}"
                 items-prop="bookAuthors"
+                :error-messages="authorErrors"
+                @blur="$v.data.author.$touch()"
               />
             </v-col>
             <v-col>
               <selector-with-new
-                v-model="data.category"
+                v-model="$v.data.category.$model"
                 label="分类"
                 new-url="/book-categories"
                 items-query="query{bookCategories{id name}}"
                 items-prop="bookCategories"
+                :error-messages="categoryErrors"
+                @blur="$v.data.category.$touch()"
               />
             </v-col>
           </v-row>
           <v-textarea
-            v-model="data.introduce"
+            v-model="$v.data.introduce.$model"
             filled
+            required
             label="简介"
             placeholder="书籍简介"
+            :error-messages="introErrors"
           />
           <v-textarea
             v-model="data.comment"
@@ -76,8 +83,10 @@
 </template>
 
 <script>
-import ColorThief from '~/thirdparty/colorthief'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 
+import ColorThief from '~/thirdparty/colorthief'
 import DropZone from '~/components/DropZone'
 import SelectorWithNew from '~/components/SelectorWithNew'
 
@@ -86,6 +95,17 @@ export default {
   components: {
     DropZone,
     SelectorWithNew
+  },
+  mixins: [
+    validationMixin
+  ],
+  validations: {
+    data: {
+      title: { required },
+      author: { required },
+      category: { required },
+      introduce: { required }
+    }
   },
   data () {
     return {
@@ -108,13 +128,45 @@ export default {
       created: false
     }
   },
+  computed: {
+    titleErrors () {
+      let error = ''
+      if (this.$v.data.title.$dirty && this.$v.data.title.$error) {
+        error = '标题不能为空'
+      }
+      return error
+    },
+    authorErrors () {
+      let error = ''
+      if (this.$v.data.author.$dirty && this.$v.data.author.$error) {
+        error = '作者不能为空'
+      }
+      return error
+    },
+    categoryErrors () {
+      let error = ''
+      if (this.$v.data.category.$dirty && this.$v.data.category.$error) {
+        error = '分类不能为空'
+      }
+      return error
+    },
+    introErrors () {
+      let error = ''
+      if (this.$v.data.introduce.$dirty && this.$v.data.introduce.$error) {
+        error = '简介不能为空'
+      }
+      return error
+    }
+  },
   destroyed () {
-    if (!this.created && !this.file.id) {
+    if (!this.created && this.file.id) {
       this.$axios.delete(`/upload/files/${this.file.id}`)
     }
   },
   methods: {
     submit () {
+      this.$v.$touch()
+      if (this.$v.$invalid) { return }
       const colorThief = new ColorThief()
       const image = new Image()
       image.crossOrigin = 'Anonymous'
@@ -132,6 +184,10 @@ export default {
         this.created = true
         this.$toast.success('新建成功')
         this.$router.push('/books/' + data.id)
+      }).catch((err) => {
+        if (err.response.status === 409) {
+          this.$toast.error('书籍已存在')
+        }
       })
     }
   }
