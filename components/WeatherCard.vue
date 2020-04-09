@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" :class="weatherClass" max-width="400" color="yellow">
+  <v-card class="mx-auto" :class="weatherClass" max-width="400">
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="headline">
