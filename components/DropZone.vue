@@ -1,6 +1,9 @@
 <template>
-  <div class="drop-zone pa-2 continuous-borders" :class="{'drag-anim': dragover}" style="width: 100%">
+  <div class="drop-zone pa-2 continuous-borders" style="width: 100%">
     <v-responsive :aspect-ratio="aspectRatio">
+      <v-overlay absolute :value="uploading" :opacity="0.7">
+        <v-progress-circular indeterminate size="32"></v-progress-circular>
+      </v-overlay>
       <input ref="inputFile" type="file" accept="image/*" style="display: none" @change="inputChange">
       <div v-if="file.url" style="position: relative">
         <v-hover v-slot:default="{ hover }">
@@ -25,8 +28,6 @@
         style="width: 100%; height: 100%;"
         @drop="drop"
         @click="click"
-        @dragenter="dragover = true"
-        @dragleave="dragover = false"
       >
         <slot>
           <div class="text-center inner">
@@ -77,14 +78,22 @@ export default {
   },
   data () {
     return {
-      dragover: false
+      uploading: false
     }
   },
   methods: {
+    handleUrl (url) {
+      console.log('upload')
+      const fd = new FormData()
+      fd.append('url', url)
+      this.upload(fd)
+    },
     upload (fd) {
+      this.uploading = true
       this.$axios.post('/upload', fd).then(({ data }) => {
         this.url = data[0].url
         this.$emit('change', { id: data[0].id, url: data[0].url })
+        this.uploading = false
       })
     },
     remove () {
@@ -141,8 +150,8 @@ export default {
     top: 5%;
     right: 5%;
   }
-}
-.drag-anim {
-  animation: ants 12s linear infinite;
+  &:hover {
+    animation: ants 12s linear infinite;
+  }
 }
 </style>

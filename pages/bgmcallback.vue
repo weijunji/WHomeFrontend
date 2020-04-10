@@ -20,7 +20,7 @@ export default {
   },
   mounted () {
     this.$axios.put('/bgm', {
-      code: this.$router.currentRoute.query.code
+      code: this.$route.query.code
     }).then(({ data }) => {
       console.log(data)
     }).catch((err) => {

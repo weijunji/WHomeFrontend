@@ -3,7 +3,7 @@
     <v-form>
       <v-row>
         <v-col :cols="12" :sm="6" :md="4">
-          <drop-zone v-model="file" title="上传封面" />
+          <drop-zone ref="dropzone" v-model="file" title="上传封面" />
         </v-col>
         <v-col :cols="12" :sm="6" :md="8">
           <v-text-field
@@ -156,6 +156,26 @@ export default {
         error = '简介不能为空'
       }
       return error
+    }
+  },
+  mounted () {
+    if (this.$route.query.title) { this.data.title = decodeURIComponent(this.$route.query.title) }
+    if (this.$route.query.introduce) { this.data.introduce = decodeURIComponent(this.$route.query.introduce) }
+    if (this.$route.query.link) { this.data.link = decodeURIComponent(this.$route.query.link) }
+    if (this.$route.query.author) {
+      const input = document.createElement('input')
+      input.setAttribute('readonly', 'readonly')
+      input.setAttribute('value', decodeURIComponent(this.$route.query.author))
+      document.body.appendChild(input)
+      input.select()
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+      }
+      document.body.removeChild(input)
+    }
+    if (this.$route.query.cover) {
+      const cover = decodeURIComponent(this.$route.query.cover)
+      this.$refs.dropzone.handleUrl(cover)
     }
   },
   destroyed () {
