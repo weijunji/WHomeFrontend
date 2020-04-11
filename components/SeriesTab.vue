@@ -11,6 +11,11 @@
           :ep="subject.ep"
           :ep-count="subject.epCount"
           :link="subject.link"
+          :introduce="subject.introduce"
+          :status="subject.status"
+          :comment="subject.comment"
+          :star="subject.star"
+          :type="subject.type"
           @update="update"
         />
       </v-col>
