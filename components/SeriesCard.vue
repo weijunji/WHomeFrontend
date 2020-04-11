@@ -63,22 +63,23 @@
                       </v-btn>
                     </v-btn-toggle>
                   </v-input>
+                  <v-input label="评分">
+                    <v-rating v-model="data.star" hover />
+                  </v-input>
                   <v-textarea
                     v-model="data.comment"
                     filled
                     label="评论"
                     placeholder="评论"
                   />
-                  <v-input label="评分">
-                    <v-rating v-model="data.star" hover />
-                  </v-input>
                   <v-text-field
                     v-model="$v.data.epCount.$model"
                     label="总集数"
+                    :error-messages="epCountError"
                   />
                   <v-slider
                     v-if="epCount"
-                    v-model="$v.data.ep.$model"
+                    v-model="data.ep"
                     label="已观看集数"
                     thumb-label="always"
                     class="mt-8"
@@ -91,6 +92,7 @@
                     label="已观看集数"
                     type="number"
                     placeholder="请输入集数"
+                    :error-messages="epError"
                   />
                 </v-card-text>
                 <v-card-actions>
@@ -206,6 +208,23 @@ export default {
     }
   },
   computed: {
+    epError () {
+      if (this.$v.data.ep.$dirty) {
+        if (!this.$v.data.ep.required) { return '不能为空' }
+        if (!this.$v.data.ep.integer) { return '必须为整数' }
+        if (!this.$v.data.ep.maxValue) { return '不能大于总集数' }
+        if (!this.$v.data.ep.minValue) { return '不能小于0' }
+      }
+      return ''
+    },
+    epCountError () {
+      if (this.$v.data.epCount.$dirty) {
+        if (!this.$v.data.epCount.required) { return '不能为空' }
+        if (!this.$v.data.epCount.integer) { return '必须为整数' }
+        if (!this.$v.data.epCount.minValue) { return '不能小于0' }
+      }
+      return ''
+    },
     showProgress () {
       return this.type === 'anim' || this.type === 'series'
     }
@@ -215,6 +234,8 @@ export default {
       window.open(this.link, '_blank')
     },
     editHandle () {
+      this.$v.$touch()
+      if (this.$v.$invalid) { return }
       this.editLoading = true
       this.$axios.put(`/srs/${this.id}`, this.data).then(({ data }) => {
         this.$toast.success('更新成功')

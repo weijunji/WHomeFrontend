@@ -223,10 +223,10 @@ export default {
       return ''
     },
     epCountError () {
-      if (this.$v.data.nameCn.$dirty) {
-        if (!this.$v.data.ep.required) { return '不能为空' }
-        if (!this.$v.data.ep.integer) { return '必须为整数' }
-        if (!this.$v.data.ep.minValue) { return '不能小于0' }
+      if (this.$v.data.epCount.$dirty) {
+        if (!this.$v.data.epCount.required) { return '不能为空' }
+        if (!this.$v.data.epCount.integer) { return '必须为整数' }
+        if (!this.$v.data.epCount.minValue) { return '不能小于0' }
       }
       return ''
     }
