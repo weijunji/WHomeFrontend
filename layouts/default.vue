@@ -65,13 +65,8 @@ export default {
           admin: true
         },
         {
-          name: '追剧',
-          link: '/bgm',
-          admin: true
-        },
-        {
-          name: '电影',
-          link: '/movies',
+          name: '追番',
+          link: '/series',
           admin: true
         }
       ]
