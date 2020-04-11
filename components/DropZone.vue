@@ -2,7 +2,7 @@
   <div class="drop-zone pa-2 continuous-borders" style="width: 100%">
     <v-responsive :aspect-ratio="aspectRatio">
       <v-overlay absolute :value="uploading" :opacity="0.7">
-        <v-progress-circular indeterminate size="32"></v-progress-circular>
+        <v-progress-circular indeterminate size="32" />
       </v-overlay>
       <input ref="inputFile" type="file" accept="image/*" style="display: none" @change="inputChange">
       <div v-if="file.url" style="position: relative">
@@ -83,7 +83,6 @@ export default {
   },
   methods: {
     handleUrl (url) {
-      console.log('upload')
       const fd = new FormData()
       fd.append('url', url)
       this.upload(fd)

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <LoginRequired />
     <v-form>
       <v-row>
         <v-col :cols="12" :sm="6" :md="4">
@@ -88,12 +89,14 @@ import { required } from 'vuelidate/lib/validators'
 
 import ColorThief from '~/thirdparty/colorthief'
 import DropZone from '~/components/DropZone'
+import LoginRequired from '~/components/LoginRequired'
 import SelectorWithNew from '~/components/SelectorWithNew'
 
 export default {
   name: 'NewBook',
   components: {
     DropZone,
+    LoginRequired,
     SelectorWithNew
   },
   mixins: [

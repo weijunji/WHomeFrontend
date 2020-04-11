@@ -1,5 +1,7 @@
 <template>
-  <div id="editor" :style="{height}" style="background-color: #ffffff" />
+  <v-input :error-messages="errorMessages">
+    <div id="editor" :style="{height}" style="background-color: #ffffff" />
+  </v-input>
 </template>
 
 <script>
@@ -19,6 +21,10 @@ export default {
     height: {
       type: String,
       default: '500px'
+    },
+    errorMessages: {
+      type: [String, Array],
+      default: ''
     }
   },
   data () {
@@ -32,6 +38,7 @@ export default {
       tab: '    ',
       mode: 'ir',
       value: this.content,
+      width: '100%',
       cache: {
         enable: true,
         id: 'blogEditor'
@@ -49,6 +56,7 @@ export default {
       },
       input: this.input
     })
+    this.$emit('change', window.localStorage.blogEditor)
   },
   methods: {
     input (val) {
@@ -191,7 +199,6 @@ export default {
       vditor.upload.range = getSelection().getRangeAt(0).cloneRange()
     },
     uploadFiles (files) {
-      console.log('upload')
       const vditor = this.editor.vditor
       const editorElement = this.getElement(vditor)
       vditor.upload.range = this.getEditorRange(editorElement)

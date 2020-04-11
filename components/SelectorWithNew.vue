@@ -106,7 +106,6 @@ export default {
       })
     },
     change (value) {
-      console.log(value)
       this.$emit('change', value)
     }
   }
