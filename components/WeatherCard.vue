@@ -121,7 +121,6 @@ export default {
     this.$axios.get('https://free-api.heweather.net/s6/weather/forecast?key=8ed81bcc72fd42e79c316665482704cd&location=auto_ip').then(
       ({ data }) => {
         this.data = data.HeWeather6[0]
-        console.log(this.data)
       }
     )
   },

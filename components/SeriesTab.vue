@@ -15,7 +15,9 @@
         />
       </v-col>
     </v-row>
-    <div v-else class="text-center py-4">没有数据</div>
+    <div v-else class="text-center py-4">
+      没有数据
+    </div>
     <v-pagination
       v-if="pageCount"
       v-model="page"

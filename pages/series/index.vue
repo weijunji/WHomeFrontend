@@ -18,7 +18,9 @@
         </div>
         <v-spacer />
         <div class="my-auto">
-          <v-btn :loading="updating" icon @click="updating = true"><v-icon>fa-redo</v-icon></v-btn>
+          <v-btn :loading="updating" icon @click="updating = true">
+            <v-icon>fa-redo</v-icon>
+          </v-btn>
         </div>
       </v-card-title>
       <v-card-text>
