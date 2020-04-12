@@ -2,26 +2,78 @@
   <div>
     <LoginRequired />
     <v-container>
-      <v-row v-if="books.length">
-        <v-col
-          v-for="book of books"
-          :key="book.id"
-          class="book"
+      <v-toolbar floating>
+        <v-select
+          v-model="filter"
+          :items="items"
+          :disabled="!!search"
+          style="width: 70px; margin-bottom: -16px"
+        />
+        <v-text-field
+          v-model="search"
+          class="ml-4"
+          :color="searchType === 'title' ? 'primary' : 'success'"
+          hide-details
+          :placeholder="searchType === 'title' ? '搜索书名' : '搜索作者'"
+          prepend-inner-icon="fa-search"
+          clearable
+          @input="debounce(handleSearch, 1000)"
         >
-          <BookCard
-            :id="book.id"
-            :title="book.title"
-            :author="book.author.name"
-            :star="book.star"
-            :cover="book.cover ? book.cover.url : ''"
-            :color="book.color ? book.color : '#ffffff'"
-            :avatar="book.author.avatar ? book.author.avatar.url : 'https://cdn.weijunji.top/files/unknown.png'"
+          <template slot="prepend">
+            <v-btn v-if="searchType === 'title'" icon small @click="searchType = 'author.name'">
+              <v-icon size="20" color="primary">fa-book</v-icon>
+            </v-btn>
+            <v-btn v-else icon small @click="searchType = 'title'">
+              <v-icon size="20" color="success">fa-user</v-icon>
+            </v-btn>
+          </template>
+        </v-text-field>
+        <v-btn :loading="updating" :disabled="!!search" icon @click="updating = true">
+          <v-icon>fa-redo</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <div v-show="!search">
+        <div v-for="item of items" :key="item.value">
+          <BookTab
+            v-if="filter === item.value"
+            v-model="updating"
+            :read="item.value"
+            :index="0"
+            :current="filter"
           />
-        </v-col>
-      </v-row>
-      <h2 v-else>
-        没有书籍存在
-      </h2>
+        </div>
+      </div>
+      <div v-show="search" class="text-center">
+        <v-progress-circular
+          v-if="searching && searchResult.length === 0"
+          class="mt-8"
+          color="primary"
+          indeterminate
+        />
+        <v-row v-else-if="searchResult.length !== 0">
+          <v-col
+            v-for="book of searchResult"
+            :key="book.id"
+            class="book"
+          >
+            <BookCard
+              :id="book.id"
+              show-badge
+              :title="book.title"
+              :author="book.author.name"
+              :star="book.star"
+              :cover="book.cover ? book.cover.url : ''"
+              :color="book.color ? book.color : '#ffffff'"
+              :avatar="book.author.avatar ? book.author.avatar.url : 'https://cdn.weijunji.top/files/unknown.png'"
+              :read="book.read"
+              :comment="book.comment"
+            />
+          </v-col>
+        </v-row>
+        <h2 v-else class="text-center">
+          没有书籍存在
+        </h2>
+      </div>
     </v-container>
     <v-btn
       dark
@@ -39,51 +91,72 @@
 <script>
 import LoginRequired from '~/components/LoginRequired'
 import BookCard from '~/components/BookCard'
+import BookTab from '~/components/BookTab'
 
 export default {
   name: 'Books',
   components: {
     LoginRequired,
-    BookCard
+    BookCard,
+    BookTab
   },
   async asyncData (ctx) {
-    const { data } = await ctx.$axios.post('/graphql', {
-      query: `query SimpleBooks{
-          booksConnection{
-            values{
-            id
-            title
-            star
-            color
-            cover { url }
-            author {
-              name
-              avatar { url }
-            }
-          }
-          aggregate {
-            totalCount
-          }
-        }
-      }`
-    })
-    const books = data.data.booksConnection.values.reverse()
-    /* append data for debug
-    for (const i of Array(50)) {
-      books.push(data.data.booksConnection.values[0])
-      console.log(i)
-    }
-    */
-    return { books }
+    const { data } = await ctx.$axios.get('/books')
+    return { books: data }
   },
   data () {
     return {
-      dialog: false
+      items: [
+        {
+          text: '全部',
+          value: 'all'
+        },
+        {
+          text: '在看',
+          value: 'reading'
+        },
+        {
+          text: '未看',
+          value: 'wait'
+        },
+        {
+          text: '看完',
+          value: 'finish'
+        }
+      ],
+      dialog: false,
+      filter: 'all',
+      updating: false,
+      search: '',
+      searchType: 'title',
+      searching: true,
+      searchResult: [],
+      timeout: null
+    }
+  },
+  watch: {
+    searchType () {
+      this.handleSearch()
     }
   },
   methods: {
+    debounce (fn, wait) {
+      if (this.search !== '' && this.searchResult.length === 0) { this.searching = true }
+      if (this.search === '') { this.searching = false }
+      if (this.timeout !== null) { clearTimeout(this.timeout) }
+      this.timeout = setTimeout(fn, wait)
+    },
     createBook () {
       this.dialog = true
+    },
+    handleSearch () {
+      if (this.search !== '') {
+        this.searching = true
+        this.$axios.get(`/books?${this.searchType}_contains=${this.search}`).then(({ data }) => {
+          this.searchResult = data
+          this.searching = false
+        })
+      }
     }
   }
 }
