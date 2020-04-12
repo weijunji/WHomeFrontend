@@ -206,7 +206,7 @@ export default {
       this.$axios.post('/books', this.data).then(({ data }) => {
         this.created = true
         this.$toast.success('新建成功')
-        this.$router.push('/books/' + data.id)
+        this.$router.push('/books')
       }).catch((err) => {
         if (err.response.status === 409) {
           this.$toast.error('书籍已存在')

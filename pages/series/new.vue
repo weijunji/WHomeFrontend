@@ -267,7 +267,7 @@ export default {
       this.$axios.post('/srs', this.data).then(({ data }) => {
         this.created = true
         this.$toast.success('新建成功')
-        this.$router.push('/series/' + data.id)
+        this.$router.push('/series')
       }).catch((err) => {
         if (err.response.status === 409) {
           this.$toast.error('项目已存在')
