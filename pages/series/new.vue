@@ -233,7 +233,7 @@ export default {
   },
   mounted () {
     if (this.$route.query.name) { this.data.name = this.$route.query.name }
-    if (this.$route.query.nameCn) { this.data.title = this.$route.query.nameCn }
+    if (this.$route.query.nameCn) { this.data.nameCn = this.$route.query.nameCn }
     if (this.$route.query.ep) { this.data.ep = Number(this.$route.query.ep) }
     if (this.$route.query.epCount) { this.data.epCount = Number(this.$route.query.epCount) }
     if (this.$route.query.type) { this.data.type = this.$route.query.type }

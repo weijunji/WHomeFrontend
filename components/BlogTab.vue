@@ -19,7 +19,7 @@
       indeterminate
     />
     <h2 v-else class="text-center">
-      没有书籍存在
+      没有博客存在
     </h2>
   </div>
 </template>

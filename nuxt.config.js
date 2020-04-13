@@ -66,7 +66,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://localhost:1337/',
+    baseURL: 'https://api.weijunji.top/',
     https: false
   },
   /*

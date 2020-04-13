@@ -21,6 +21,12 @@
         </template>
         <v-list>
           <v-subheader>{{ username }}</v-subheader>
+          <v-list-item @click="$router.push('/dashboard')">
+            <v-list-item-icon>
+              <v-icon>fa-tachometer-alt</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>管理</v-list-item-content>
+          </v-list-item>
           <v-list-item @click="logout">
             <v-list-item-icon>
               <v-icon>fa-sign-out-alt</v-icon>
