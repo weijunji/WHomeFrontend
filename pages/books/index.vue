@@ -21,10 +21,14 @@
         >
           <template slot="prepend">
             <v-btn v-if="searchType === 'title'" icon small @click="searchType = 'author.name'">
-              <v-icon size="20" color="primary">fa-book</v-icon>
+              <v-icon size="20" color="primary">
+                fa-book
+              </v-icon>
             </v-btn>
             <v-btn v-else icon small @click="searchType = 'title'">
-              <v-icon size="20" color="success">fa-user</v-icon>
+              <v-icon size="20" color="success">
+                fa-user
+              </v-icon>
             </v-btn>
           </template>
         </v-text-field>
@@ -34,13 +38,15 @@
       </v-toolbar>
       <div v-show="!search">
         <div v-for="item of items" :key="item.value">
-          <BookTab
-            v-if="filter === item.value"
-            v-model="updating"
-            :read="item.value"
-            :index="0"
-            :current="filter"
-          />
+          <keep-alive>
+            <BookTab
+              v-if="filter === item.value"
+              v-model="updating"
+              :read="item.value"
+              :index="0"
+              :current="filter"
+            />
+          </keep-alive>
         </div>
       </div>
       <div v-show="search" class="text-center">
