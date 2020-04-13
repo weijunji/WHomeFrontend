@@ -1,9 +1,12 @@
 <template>
-  <div>BLOGS</div>
+  <div>Redirect to Home</div>
 </template>
 
 <script>
 export default {
-  name: 'Blogs'
+  name: 'Blogs',
+  created () {
+    this.$router.replace('/')
+  }
 }
 </script>
