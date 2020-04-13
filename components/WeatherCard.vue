@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" :class="weatherClass" max-width="400">
+  <v-card class="mx-auto" :class="weatherClass" max-width="400" :elevation="4">
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="headline">
@@ -10,16 +10,16 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-card-text>
+    <v-card-text class="pt-0">
       <v-row align="center">
-        <v-col cols="6">
+        <v-col cols="7">
           <div class="display-3">
             {{ `${night ? data.daily_forecast[0].tmp_min : data.daily_forecast[0].tmp_max}` }}&deg;C
           </div>
           <div>湿度: <span class="display-1">{{ data.daily_forecast[0].hum }}%</span></div>
         </v-col>
-        <v-col cols="6">
-          <v-img :src="`/statics/weather/${getIcon(night ? data.daily_forecast[0].cond_code_n : data.daily_forecast[0].cond_code_d)}.svg`" />
+        <v-col cols="5">
+          <v-img contain :src="`/statics/weather/${getIcon(night ? data.daily_forecast[0].cond_code_n : data.daily_forecast[0].cond_code_d)}.svg`" />
         </v-col>
       </v-row>
       <v-divider />
