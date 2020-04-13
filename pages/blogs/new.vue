@@ -9,6 +9,7 @@
       :error-messages="titleError"
     />
     <Editor
+      ref="editor"
       v-model="$v.data.content.$model"
       :error-messages="contentError"
     />
@@ -34,22 +35,12 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-switch v-model="data.private" :label="data.private ? '私有' : '公开'" color="error" class="pa-4" />
-      <v-scroll-x-transition>
-        <v-col v-show="data.private" :cols="12" :md="6" :lg="4">
-          <v-text-field
-            v-model="data.password"
-            label="密码"
-            placeholder="输入密码，空则禁止密码访问"
-          />
-        </v-col>
-      </v-scroll-x-transition>
-    </v-row>
-    <div style="text-align: end;">
+      <v-switch v-model="data.private" :label="data.private ? '私有' : '公开'" color="error" class="px-4 mt-2" />
+      <v-spacer />
       <v-btn class="ma-2" outlined color="primary" @click="submit">
         新建
       </v-btn>
-    </div>
+    </v-row>
   </v-container>
 </template>
 
@@ -87,8 +78,7 @@ export default {
         content: '',
         category: '',
         tags: [],
-        private: false,
-        password: ''
+        private: false
       },
       titleErrors: '',
       tags: []
@@ -130,12 +120,11 @@ export default {
         }
       }
 
-      if (!this.data.private) { this.data.password = '' }
-
       this.$axios.post('/blogs', this.data).then(({ data }) => {
         this.created = true
+        this.$refs.editor.clear()
         this.$toast.success('新建成功')
-        this.$router.push('/series/' + data.id)
+        this.$router.push(`/blogs/${data.id}`)
       }).catch((err) => {
         this.data.tags = []
         if (err.response.status === 409) {
