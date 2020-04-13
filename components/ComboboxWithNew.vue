@@ -5,6 +5,7 @@
     :item-text="itemText"
     :item-value="itemId"
     :search-input.sync="search"
+    :value="selects"
     deletable-chips
     hide-selected
     multiple

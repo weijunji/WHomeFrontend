@@ -7,6 +7,7 @@
     :item-value="itemId"
     :search-input.sync="search"
     :error-messages="errorMessages"
+    :value="selectId"
     @change="change"
   >
     <template v-slot:item="{ item }">

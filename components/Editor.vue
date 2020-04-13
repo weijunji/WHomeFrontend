@@ -25,6 +25,10 @@ export default {
     errorMessages: {
       type: [String, Array],
       default: ''
+    },
+    edit: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -40,7 +44,7 @@ export default {
       value: this.content,
       width: '100%',
       cache: {
-        enable: true,
+        enable: !this.edit,
         id: 'blogEditor'
       },
       preview: {
@@ -56,11 +60,16 @@ export default {
       },
       input: this.input
     })
-    this.$emit('change', window.localStorage.blogEditor)
+    if (!this.edit) {
+      this.$emit('change', window.localStorage.blogEditor)
+    }
   },
   methods: {
     input (val) {
       this.$emit('change', val)
+    },
+    clear () {
+      this.editor.clearCache()
     },
     getElement (vditor) {
       switch (vditor.currentMode) {
