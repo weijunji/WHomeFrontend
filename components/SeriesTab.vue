@@ -66,20 +66,30 @@ export default {
       pageSubjects: [[]],
       page: 1,
       pageCount: 0,
-      created_: false
+      created_: false,
+      itemPerPage: 12
     }
   },
   watch: {
     updating () {
       if (this.created_ && this.updating && this.index === this.current) {
-        this.update()
+        if (!this.pageSubjects[this.page]) {
+          this.update(false)
+        } else {
+          this.update()
+        }
+      }
+    },
+    page () {
+      if (!this.pageSubjects[this.page]) {
+        this.$emit('change', true)
       }
     }
   },
   created () {
     this.$emit('change', true)
     this.$axios.get(`/srs/count?status=${this.status}`).then(({ data }) => {
-      this.pageCount = Math.ceil(data / 12)
+      this.pageCount = Math.ceil(data / this.itemPerPage)
     })
     this.update(false)
   },
@@ -88,7 +98,7 @@ export default {
   },
   methods: {
     update (showToast = true) {
-      this.$axios.get(`/srs?status=${this.status}&_start=${(this.page - 1) * 12}&_limit=12`).then(({ data }) => {
+      this.$axios.get(`/srs?status=${this.status}&_start=${(this.page - 1) * this.itemPerPage}&_limit=${this.itemPerPage}`).then(({ data }) => {
         this.$set(this.pageSubjects, this.page - 1, data)
         this.$emit('change', false)
         if (showToast) { this.$toast.success('刷新成功') }

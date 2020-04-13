@@ -7,8 +7,8 @@
         class="book"
       >
         <BookCard
-          :show-badge="read === 'all'"
           :id="book.id"
+          :show-badge="read === 'all'"
           :title="book.title"
           :author="book.author.name"
           :star="book.star"
@@ -20,6 +20,12 @@
         />
       </v-col>
     </v-row>
+    <v-progress-circular
+      v-else-if="updating"
+      class="mt-8"
+      color="primary"
+      indeterminate
+    />
     <h2 v-else class="text-center">
       没有书籍存在
     </h2>
@@ -61,6 +67,7 @@ export default {
     return {
       booksPage: [[]],
       page: 1,
+      itemPerPage: 15,
       pageCount: 0,
       created_: false
     }
@@ -68,7 +75,16 @@ export default {
   watch: {
     updating () {
       if (this.created_ && this.updating && this.read === this.current) {
-        this.update()
+        if (!this.booksPage[this.page]) {
+          this.update(false)
+        } else {
+          this.update()
+        }
+      }
+    },
+    page () {
+      if (!this.booksPage[this.page]) {
+        this.$emit('change', true)
       }
     }
   },
@@ -76,11 +92,11 @@ export default {
     this.$emit('change', true)
     if (this.read === 'all') {
       this.$axios.get('/books/count').then(({ data }) => {
-        this.pageCount = Math.ceil(data / 12)
+        this.pageCount = Math.ceil(data / this.itemPerPage)
       })
     } else {
       this.$axios.get(`/books/count?read=${this.read}`).then(({ data }) => {
-        this.pageCount = Math.ceil(data / 12)
+        this.pageCount = Math.ceil(data / this.itemPerPage)
       })
     }
     this.update(false)
@@ -92,9 +108,9 @@ export default {
     update (showToast = true) {
       let url
       if (this.read === 'all') {
-        url = `/books?_start=${(this.page - 1) * 16}&_limit=16`
+        url = `/books?_start=${(this.page - 1) * this.itemPerPage}&_limit=${this.itemPerPage}`
       } else {
-        url = `/books?read=${this.read}&_start=${(this.page - 1) * 16}&_limit=16`
+        url = `/books?read=${this.read}&_start=${(this.page - 1) * this.itemPerPage}&_limit=${this.itemPerPage}`
       }
       this.$axios.get(url).then(({ data }) => {
         this.$set(this.booksPage, this.page - 1, data)

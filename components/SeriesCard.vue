@@ -7,7 +7,7 @@
         size="125"
         tile
       >
-        <v-img :src="cover" />
+        <v-img :src="cover + '-seriescover'" />
       </v-avatar>
       <div class="flex-grow-1" style="overflow: hidden">
         <div>

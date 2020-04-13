@@ -10,6 +10,7 @@
     >
       <v-img
         class="align-end"
+        min-height="300px"
         :src="cover + '-bookCover'"
       >
         <v-avatar
@@ -20,7 +21,7 @@
           class="read-icon"
         >
           <v-icon size="20" color="white">
-            {{read === 'reading' ? 'fa-book-open' : (read === 'finish' ? 'fa-book' : 'fa-clock')}}
+            {{ read === 'reading' ? 'fa-book-open' : (read === 'finish' ? 'fa-book' : 'fa-clock') }}
           </v-icon>
         </v-avatar>
         <v-card-title :class="'font-weight-bold grey--text ' + (colorType ? 'text--lighten-5' : 'text--darken-4')">
