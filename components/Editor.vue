@@ -233,3 +233,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.v-application code:before {
+  content: ""!important;
+}
+.v-application code:after {
+  content: ""!important;
+}
+</style>

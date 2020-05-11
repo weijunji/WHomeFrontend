@@ -42,7 +42,7 @@
     <v-content>
       <nuxt />
     </v-content>
-    <v-footer fixed app>
+    <v-footer app>
       <span>赣ICP备17016171号-2 &copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>

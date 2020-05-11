@@ -1,5 +1,7 @@
 <template>
-  <div v-if="err">{{ err }}</div>
+  <div v-if="err">
+    {{ err }}
+  </div>
   <v-container v-else>
     <v-card>
       <v-card-title class="display-1">
@@ -29,7 +31,7 @@
           {{ tag.name }}
         </v-chip>
         <v-divider class="my-3" />
-        <div id="content"></div>
+        <div id="content" />
       </v-card-text>
     </v-card>
     <v-btn
@@ -86,3 +88,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.v-application code:before {
+  content: ""!important;
+}
+.v-application code:after {
+  content: ""!important;
+}
+</style>
