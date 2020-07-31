@@ -43,7 +43,7 @@
       <nuxt />
     </v-content>
     <v-footer app>
-      <span>赣ICP备17016171号-2 &copy; {{ new Date().getFullYear() }}</span>
+      <span><a href="http://beian.miit.gov.cn/">赣ICP备17016171号-2</a> &copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
 </template>
@@ -71,6 +71,11 @@ export default {
           name: '追番',
           link: '/series',
           admin: true
+        },
+        {
+          name: '工具',
+          link: '/tools',
+          admin: false
         }
       ]
     }
