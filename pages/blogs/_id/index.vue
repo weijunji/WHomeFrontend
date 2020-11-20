@@ -3,6 +3,7 @@
     {{ err }}
   </div>
   <v-container v-else>
+    <v-row justify="center">
     <v-card>
       <v-card-title class="display-1">
         {{ blog.title }}
@@ -38,13 +39,13 @@
       v-if="isLogin"
       dark
       fab
-      large
       color="pink"
       style="bottom: 10vh; right: 20vw; position: fixed"
       :to="`/blogs/${blog.id}/edit`"
     >
       <v-icon>fa-edit</v-icon>
     </v-btn>
+    </v-row>
   </v-container>
 </template>
 

@@ -84,7 +84,6 @@
     <v-btn
       dark
       fab
-      large
       color="pink"
       style="bottom: 10vh; right: 20vw; position: fixed"
       to="/books/new"
