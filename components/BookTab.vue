@@ -14,7 +14,7 @@
           :star="book.star"
           :cover="book.cover ? book.cover.url : ''"
           :color="book.color ? book.color : '#ffffff'"
-          :avatar="book.author.avatar ? book.author.avatar.url : 'https://cdn.weijunji.top/files/unknown.png'"
+          :avatar="book.author.avatar ? book.author.avatar.url : 'https://files.weijunji.top/files/unknown.png'"
           :read="book.read"
           :comment="book.comment"
         />
