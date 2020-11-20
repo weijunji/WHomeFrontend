@@ -48,15 +48,15 @@ export default {
     }
   },
   created () {
-    let countUrl = `/blogs/count?category.name=${this.category}`
+    let countUrl = '/blogs/count'
     if (this.category === '全部') {
       countUrl = '/blogs/count'
     }
-    this.$axios.get(countUrl).then(({ data }) => {
+    this.$axios.get(countUrl, { params: { 'category.name': this.category } }).then(({ data }) => {
       this.pageCount = Math.ceil(data / this.itemPerPage)
     })
 
-    let url = `/blogs?category.name=${this.category}&_start=${(this.page - 1) * this.itemPerPage}&_limit=${this.itemPerPage}`
+    let url = `/blogs?category.name=${encodeURIComponent(this.category)}&_start=${(this.page - 1) * this.itemPerPage}&_limit=${this.itemPerPage}`
     if (this.category === '全部') {
       url = `/blogs?_start=${(this.page - 1) * this.itemPerPage}&_limit=${this.itemPerPage}`
     }

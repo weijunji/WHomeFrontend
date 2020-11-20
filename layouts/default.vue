@@ -21,7 +21,7 @@
         </template>
         <v-list>
           <v-subheader>{{ username }}</v-subheader>
-          <v-list-item @click="$router.push('/dashboard')">
+          <v-list-item @click="goDashboard">
             <v-list-item-icon>
               <v-icon>fa-tachometer-alt</v-icon>
             </v-list-item-icon>
@@ -106,6 +106,9 @@ export default {
   methods: {
     logout () {
       this.$store.commit('changeToken', { token: '' })
+    },
+    goDashboard () {
+      window.location = '/dashboard/'
     }
   }
 }
