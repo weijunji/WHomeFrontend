@@ -4,37 +4,37 @@
   </div>
   <v-container v-else>
     <v-row justify="center">
-    <v-card>
-      <v-card-title class="display-1">
-        {{ blog.title }}
-      </v-card-title>
-      <v-card-subtitle>
-        <span class="d-none d-sm-inline">
-          <v-icon :size="15">fa-plus</v-icon>
-          创建于{{ createdTime }}&nbsp;&nbsp;
-        </span>
-        <span>
-          <v-icon :size="15">fa-edit</v-icon>
-          编辑于{{ updatedTime }}
-        </span>
-      </v-card-subtitle>
-      <v-card-text>
-        <span>
-          <v-icon :size="15" :color="blog.category.color">{{ blog.category.icon }}</v-icon>
-          {{ blog.category.name }}
-        </span>
-        <v-chip
-          v-for="tag of blog.tags"
-          :key="tag.name"
-          small
-          class="mx-1"
-        >
-          {{ tag.name }}
-        </v-chip>
-        <v-divider class="my-3" />
-        <div id="content" />
-      </v-card-text>
-    </v-card>
+      <v-card>
+        <v-card-title class="display-1">
+          {{ blog.title }}
+        </v-card-title>
+        <v-card-subtitle>
+          <span class="d-none d-sm-inline">
+            <v-icon :size="15">fa-plus</v-icon>
+            创建于{{ createdTime }}&nbsp;&nbsp;
+          </span>
+          <span>
+            <v-icon :size="15">fa-edit</v-icon>
+            编辑于{{ updatedTime }}
+          </span>
+        </v-card-subtitle>
+        <v-card-text>
+          <span>
+            <v-icon :size="15" :color="blog.category.color">{{ blog.category.icon }}</v-icon>
+            {{ blog.category.name }}
+          </span>
+          <v-chip
+            v-for="tag of blog.tags"
+            :key="tag.name"
+            small
+            class="mx-1"
+          >
+            {{ tag.name }}
+          </v-chip>
+          <v-divider class="my-3" />
+          <div id="content" />
+        </v-card-text>
+      </v-card>
     <v-btn
       v-if="isLogin"
       dark
@@ -79,7 +79,8 @@ export default {
   },
   mounted () {
     VditorPreview.preview(document.getElementById('content'), this.blog.content, {
-      anchor: true,
+      anchor: 1,
+      theme: 'ant-design',
       hljs: {
         enable: true,
         style: 'monokailight',
