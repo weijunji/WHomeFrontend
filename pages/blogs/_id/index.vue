@@ -35,16 +35,16 @@
           <div id="content" />
         </v-card-text>
       </v-card>
-    <v-btn
-      v-if="isLogin"
-      dark
-      fab
-      color="pink"
-      style="bottom: 10vh; right: 20vw; position: fixed"
-      :to="`/blogs/${blog.id}/edit`"
-    >
-      <v-icon>fa-edit</v-icon>
-    </v-btn>
+      <v-btn
+        v-if="isLogin"
+        dark
+        fab
+        color="pink"
+        style="bottom: 10vh; right: 20vw; position: fixed"
+        :to="`/blogs/${blog.id}/edit`"
+      >
+        <v-icon>fa-edit</v-icon>
+      </v-btn>
     </v-row>
   </v-container>
 </template>
@@ -80,7 +80,6 @@ export default {
   mounted () {
     VditorPreview.preview(document.getElementById('content'), this.blog.content, {
       anchor: 1,
-      theme: 'ant-design',
       hljs: {
         enable: true,
         style: 'monokailight',
@@ -97,5 +96,15 @@ export default {
 }
 .v-application code:after {
   content: ""!important;
+}
+@media (min-width: 1904px){
+  .container {
+    max-width: 1185px;
+  }
+}
+@media (min-width: 2300px){
+  .container {
+    max-width: 1785px;
+  }
 }
 </style>

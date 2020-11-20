@@ -48,9 +48,6 @@ export default {
         id: 'blogEditor'
       },
       preview: {
-        theme: {
-          current: 'ant-design'
-        },
         hljs: {
           enable: true,
           style: 'monokailight',

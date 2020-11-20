@@ -39,9 +39,9 @@
         登录
       </v-btn>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <nuxt />
-    </v-content>
+    </v-main>
     <v-footer app>
       <span><a href="http://beian.miit.gov.cn/">赣ICP备17016171号-2</a> &copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
