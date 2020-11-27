@@ -99,6 +99,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
+    publicPath: process.env.NODE_ENV == 'production' ? 'https://cdn.weijunji.top/_nuxt/' : '/_nuxt/',
     extend (config, ctx) {
     }
   }
